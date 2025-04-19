@@ -1,22 +1,153 @@
-# Vue 3 + Vite + Nuxt UI 3
+# ToDoApp – Vue 3 + Vite + Nuxt UI 3
 
-This template should help get you started developing with Vue 3, TypeScript, Vite and [Nuxt UI](https://ui.nuxt.com).
+This project is a starter template for building modern web applications using **Vue 3**, **Vite**, **TypeScript**, and [Nuxt UI 3](https://ui.nuxt.com). It is set up for rapid development with a focus on best practices and developer experience.
 
-Online demo: https://nuxt-ui-vue-starter.pages.dev
+## Features
 
-[![nuxt ui with vue 3 only](https://github.com/user-attachments/assets/a81af231-b2aa-4753-86c1-2c8802196a4b)](https://nuxt-ui-vue-starter.pages.dev)
+- **Vue 3**: Progressive JavaScript framework for building user interfaces.
+- **Vite**: Fast, next-generation frontend tooling.
+- **TypeScript**: Type-safe development.
+- **Nuxt UI 3**: Beautiful, customizable UI components.
+- **ESLint & Prettier**: Code quality and formatting.
+- **Tailwind CSS**: Utility-first CSS framework (with Prettier plugin).
+- **Auto Imports**: Common composables and utilities are auto-imported for convenience.
+
+## Application Flow
+
+```mermaid
+flowchart TD
+    A[User Opens App] --> B[App.vue]
+    B --> C[TaskTable.vue<br/>(Show Task List)]
+    B --> D[ThemeToggle.vue<br/>(Toggle Dark Mode)]
+    C --> E[Actions Dropdown]
+    E -->|View| F[TaskModal.vue<br/>(VIEW_TASK)]
+    E -->|Edit| G[TaskModal.vue<br/>(EDIT_TASK)]
+    E -->|Delete| H[TaskModal.vue<br/>(DELETE_TASK)]
+    E -->|Add Subtask| I[TaskModal.vue<br/>(ADD_SUBTASK)]
+    B --> J[Add Task Button]
+    J --> K[TaskModal.vue<br/>(ADD_TASK)]
+    F --> L[TaskDetail.vue]
+    G & K & I --> M[TaskForm.vue]
+    H --> N[TaskDelete.vue]
+    M & N --> O[taskStore.ts<br/>(Add/Edit/Delete Task/Subtask)]
+    O --> C
+    O --> P[LocalStorage]
+    C --> Q[Progress/Status Updates]
+```
+
+## Application Functionality Narrative
+
+This section describes the user flow and component interactions within the ToDoApp, as illustrated in the application flow diagram.
+
+1.  **Initialization**:
+    *   When a user opens the application, the main `App.vue` component is loaded.
+    *   `App.vue` renders the primary user interface, including the `TaskTable.vue` component (which displays the list of tasks) and the `ThemeToggle.vue` component (allowing the user to switch between light and dark modes).
+
+2.  **Adding a New Task**:
+    *   The user clicks the "Add Task" button (`J`).
+    *   This action triggers the display of `TaskModal.vue` configured for adding a task (`K - ADD_TASK`).
+    *   Inside the modal, the `TaskForm.vue` (`M`) is presented for the user to input task details.
+    *   Upon submission, the `TaskForm.vue` sends the data to `taskStore.ts` (`O`).
+    *   `taskStore.ts` processes the request to add the new task, updates the application state, persists the changes to `LocalStorage` (`P`), and notifies `TaskTable.vue` (`C`) to refresh the displayed list.
+
+3.  **Managing Existing Tasks (via Actions Dropdown)**:
+    *   Within the `TaskTable.vue` (`C`), each task has an associated "Actions Dropdown" (`E`).
+    *   This dropdown provides several options:
+        *   **View**: Opens `TaskModal.vue` (`F - VIEW_TASK`), which then displays the `TaskDetail.vue` component (`L`) showing the selected task's full information.
+        *   **Edit**: Opens `TaskModal.vue` (`G - EDIT_TASK`), presenting `TaskForm.vue` (`M`) pre-filled with the task's current data. After editing and submission, `taskStore.ts` (`O`) handles the update, saves to `LocalStorage` (`P`), and refreshes the `TaskTable.vue` (`C`).
+        *   **Delete**: Opens `TaskModal.vue` (`H - DELETE_TASK`), showing the `TaskDelete.vue` component (`N`) for confirmation. If confirmed, `taskStore.ts` (`O`) removes the task, updates `LocalStorage` (`P`), and refreshes the `TaskTable.vue` (`C`).
+        *   **Add Subtask**: Opens `TaskModal.vue` (`I - ADD_SUBTASK`), again using `TaskForm.vue` (`M`) to create a new task linked as a subtask to the selected parent. Submission follows the standard add process via `taskStore.ts` (`O`), `LocalStorage` (`P`), and updating `TaskTable.vue` (`C`).
+
+4.  **State Management and Persistence**:
+    *   All core task operations (add, edit, delete, subtask management) are handled centrally by `taskStore.ts` (`O`).
+    *   `taskStore.ts` is responsible for managing the application's task data state.
+    *   It interacts with `LocalStorage` (`P`) to ensure task data persists across browser sessions.
+    *   Changes managed by the store trigger reactivity, updating components like `TaskTable.vue` (`C`).
+
+5.  **User Feedback**:
+    *   The `TaskTable.vue` (`C`) reflects real-time updates, including changes to task progress or status (`Q`), providing immediate feedback to the user after any operation.
+
+
+
+## Components
+
+- **App.vue**: Main entry, manages modals and task list.
+- **TaskTable.vue**: Displays all tasks, triggers actions.
+- **TaskModal.vue**: Shows forms/details based on action.
+- **TaskForm.vue**: Handles add/edit for tasks and subtasks.
+- **TaskDetail.vue**: Shows task details.
+- **TaskDelete.vue**: Confirms deletion.
+- **taskStore.ts**: Centralized state management and persistence.
+- **LocalStorage**: Data persistence.
+- **ThemeToggle.vue**: Switches between light/dark mode.
+
+
+
+## Getting Started
+
+1. **Install dependencies**  
+   ```bash
+   bun install
+   ```
+
+2. **Run the development server**  
+   ```bash
+   bun dev
+   ```
+
+3. **Build for production**  
+   ```bash
+   bun build
+   ```
+
+4. **Preview production build**  
+   ```bash
+   bun preview
+   ```
+
+## Docker
+
+You can build and run this app using Docker.  
+Make sure you have [Docker](https://docs.docker.com/get-docker/) installed.
+
+### Build the Docker image
+
+```bash
+docker build -t todoapp .
+```
+
+### Run the Docker container
+
+```bash
+docker run -p 8080:8080 todoapp
+```
+
+The app will be available at [http://localhost:8080](http://localhost:8080).
+
+
 
 ## Recommended IDE Setup
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- [VS Code](https://code.visualstudio.com/)
+- [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (disable Vetur)
+- [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
 
-## Type Support For `.vue` Imports in TS
+## TypeScript & Vue
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+TypeScript does not natively understand `.vue` files. This template uses `vue-tsc` for type checking.  
+For best experience, use Volar’s Take Over Mode:
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+1. Disable the built-in TypeScript Extension:
+   - Run `Extensions: Show Built-in Extensions` in VS Code.
+   - Find `TypeScript and JavaScript Language Features`, right-click, and select `Disable (Workspace)`.
+2. Reload the window (`Developer: Reload Window`).
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+
+## Additional Notes
+
+- Uses [Bun](https://bun.sh/) as the package manager.
+- Lockfile maintenance and dependency updates are managed by Renovate.
+
+---
+
+For more details, see the [Nuxt UI documentation](https://ui.nuxt.com) and [Vite documentation](https://vitejs.dev/).
