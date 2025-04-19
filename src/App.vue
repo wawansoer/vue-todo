@@ -3,6 +3,7 @@ import TaskModal from "@/components/Task/TaskModal.vue";
 import { useModalStore } from "@/stores/modalStore";
 import { modalType } from "@/types/modalType";
 import { ref, watch } from "vue";
+import ThemeToggle from "@/components/Common/ThemeToggle.vue";
 
 const modalStore = useModalStore();
 
@@ -41,6 +42,7 @@ watch(
               >
                 <span class="hidden md:inline"> Add Task </span>
               </UButton>
+              <ThemeToggle />
             </div>
           </div>
         </template>
