@@ -1,27 +1,54 @@
+<script setup lang="ts">
+import TaskModal from "@/components/Task/TaskModal.vue";
+import { useModalStore } from "@/stores/modalStore";
+import { modalType } from "@/types/modalType";
+import { ref, watch } from "vue";
+
+const modalStore = useModalStore();
+
+const currenOpenModal = ref<modalType | "">("");
+
+const addTask = () => {
+  modalStore.open(modalType.ADD_TASK);
+};
+
+watch(
+  () => {
+    return (
+      Object.values(modalStore.modal).find((modal) => modal.open)?.name || ""
+    );
+  },
+  (newOpenModalName) => {
+    currenOpenModal.value = newOpenModalName;
+  },
+);
+</script>
+
 <template>
   <UApp>
-    <div class="flex flex-col items-center justify-center gap-4 h-screen">
-      <h1 class="font-bold text-2xl text-(--ui-primary)">
-        Nuxt UI - Vue Starter
-      </h1>
-
-      <div class="flex items-center gap-2">
-        <UButton
-          label="Documentation"
-          icon="i-lucide-square-play"
-          to="https://ui.nuxt.com/getting-started/installation/vue"
-          target="_blank"
-        />
-
-        <UButton
-          label="GitHub"
-          color="neutral"
-          variant="outline"
-          icon="i-simple-icons:github"
-          to="https://github.com/nuxt/ui"
-          target="_blank"
-        />
-      </div>
-    </div>
+    <UContainer>
+      <UCard color="stone" class="my-8">
+        <template #header>
+          <div class="flex items-center justify-between">
+            Task Lists
+            <div class="inline-flex items-center gap-4">
+              <UButton
+                size="md"
+                color="neutral"
+                variant="ghost"
+                icon="i-lucide-circle-plus"
+                @click="addTask"
+              >
+                <span class="hidden md:inline"> Add Task </span>
+              </UButton>
+            </div>
+          </div>
+        </template>
+      </UCard>
+      <TaskModal
+        v-if="currenOpenModal"
+        :modal-name="currenOpenModal as modalType"
+      />
+    </UContainer>
   </UApp>
 </template>
