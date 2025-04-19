@@ -90,7 +90,11 @@ const form = ref<FormSchema>({
 });
 
 const onSubmit = async (event: FormSubmitEvent<FormSchema>) => {
-  const { name: modalName, taskId: currentTaskId } = activeModal.value || {};
+  const {
+    name: modalName,
+    taskId: currentTaskId,
+    parentTaskId: currentParentTaskId,
+  } = activeModal.value || {};
 
   if (!modalName) {
     toast.add({
@@ -107,21 +111,44 @@ const onSubmit = async (event: FormSubmitEvent<FormSchema>) => {
     let successMessage = "";
     const now = new Date();
 
-    const isDone = formData.progress === 100;
+    if (isSubtask.value) {
+      if (!currentParentTaskId) {
+        throw new Error("Parent Task ID is missing for subtask operation.");
+      }
 
-    const taskBaseData: Partial<Task> = {
-      ...formData,
-      status: isDone ? TaskStatus.DONE : formData.status,
-      ...(isDone && { completedAt: now }),
-    };
+      if (isEdit.value && currentTaskId) {
+        // Edit Subtask
+        const subtaskPayload = { ...formData, updatedAt: now };
+        taskStore.updateSubtask(
+          currentParentTaskId,
+          currentTaskId,
+          subtaskPayload,
+        );
+        successMessage = "Subtask updated successfully.";
+      } else {
+        const subtaskPayload = { ...formData };
+        taskStore.addSubtask(currentParentTaskId, subtaskPayload);
+        successMessage = "Subtask added successfully.";
+      }
+    }
+    // --- TASK OPERATIONS ---
+    else {
+      const isDone = formData.progress === 100;
 
-    if (isEdit.value && currentTaskId) {
-      const taskPayload = { ...taskBaseData, updatedAt: now };
-      taskStore.updateTask(currentTaskId, taskPayload);
-      successMessage = "Task updated successfully.";
-    } else {
-      taskStore.addTask(taskBaseData as Task);
-      successMessage = "Task added successfully.";
+      const taskBaseData: Partial<Task> = {
+        ...formData,
+        status: isDone ? TaskStatus.DONE : formData.status,
+        ...(isDone && { completedAt: now }),
+      };
+
+      if (isEdit.value && currentTaskId) {
+        const taskPayload = { ...taskBaseData, updatedAt: now };
+        taskStore.updateTask(currentTaskId, taskPayload);
+        successMessage = "Task updated successfully.";
+      } else {
+        taskStore.addTask(taskBaseData as Task);
+        successMessage = "Task added successfully.";
+      }
     }
 
     modalStore.close(modalName);

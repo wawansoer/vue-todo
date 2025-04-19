@@ -22,6 +22,8 @@ const headerText = computed(() => {
       return "Task Details";
     case modalType.DELETE_TASK:
       return "Please confirm to delete this task";
+    case modalType.ADD_SUBTASK:
+      return "Fill this form to add your subtask";
     default:
       return "No operation found.";
   }
@@ -49,7 +51,11 @@ const closeModal = () => {
         />
         <TaskForm
           v-if="
-            [modalType.ADD_TASK, modalType.EDIT_TASK].includes(props.modalName)
+            [
+              modalType.ADD_TASK,
+              modalType.EDIT_TASK,
+              modalType.ADD_SUBTASK,
+            ].includes(props.modalName)
           "
         />
         <TaskDelete v-if="props.modalName === modalType.DELETE_TASK" />
