@@ -32,7 +32,7 @@ watch(
 </script>
 
 <template>
-  <UApp>
+  <UApp :toaster="{ position: 'top-right' }">
     <UContainer>
       <UCard color="stone" class="my-8">
         <template #header>
