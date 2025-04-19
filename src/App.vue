@@ -2,16 +2,22 @@
 import TaskModal from "@/components/Task/TaskModal.vue";
 import { useModalStore } from "@/stores/modalStore";
 import { modalType } from "@/types/modalType";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import ThemeToggle from "@/components/Common/ThemeToggle.vue";
+import TaskTable from "@/components/Task/TaskTable.vue";
+import { useTaskStore } from "@/stores/taskStore";
 
 const modalStore = useModalStore();
-
+const taskStore = useTaskStore();
 const currenOpenModal = ref<modalType | "">("");
 
 const addTask = () => {
   modalStore.open(modalType.ADD_TASK);
 };
+
+onMounted(() => {
+  taskStore.loadTasksFromLocalStorage();
+});
 
 watch(
   () => {
@@ -46,6 +52,7 @@ watch(
             </div>
           </div>
         </template>
+        <TaskTable />
       </UCard>
       <TaskModal
         v-if="currenOpenModal"
