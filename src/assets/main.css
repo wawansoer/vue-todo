@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+body {
+  @apply bg-(--ui-bg) text-(--ui-text) antialiased;
+}
+
+:root {
+  --ui-radius: var(--radius-md);
+}
