@@ -35,6 +35,10 @@ export const useTaskStore = defineStore("taskStore", {
         this.saveTasksToLocalStorage();
       }
     },
+    deleteTask(id: string) {
+      this.tasks = this.tasks.filter((task) => task.id !== id);
+      this.saveTasksToLocalStorage();
+    },
   },
   getters: {
     getTasks: (state) => state.tasks,

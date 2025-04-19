@@ -16,10 +16,14 @@ const headerText = computed(() => {
   switch (props.modalName) {
     case modalType.ADD_TASK:
       return "Fill this form to add your task";
+    case modalType.EDIT_TASK:
+      return "Fill this form to edit your task";
     case modalType.VIEW_TASK:
       return "Task Details";
+    case modalType.DELETE_TASK:
+      return "Please confirm to delete this task";
     default:
-      return "";
+      return "No operation found.";
   }
 });
 
@@ -32,7 +36,6 @@ const closeModal = () => {
 <template>
   <UModal
     v-model:open="open"
-    direction="bottom"
     :title="props.modalName"
     :description="headerText"
     :dismissible="false"
@@ -44,7 +47,12 @@ const closeModal = () => {
           v-if="props.modalName === modalType.VIEW_TASK"
           :task-id="modalStore.getTaskId(props.modalName) || ''"
         />
-        <TaskForm v-if="[modalType.ADD_TASK].includes(props.modalName)" />
+        <TaskForm
+          v-if="
+            [modalType.ADD_TASK, modalType.EDIT_TASK].includes(props.modalName)
+          "
+        />
+        <TaskDelete v-if="props.modalName === modalType.DELETE_TASK" />
       </div>
     </template>
   </UModal>
