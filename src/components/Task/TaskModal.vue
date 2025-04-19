@@ -24,6 +24,8 @@ const headerText = computed(() => {
       return "Please confirm to delete this task";
     case modalType.ADD_SUBTASK:
       return "Fill this form to add your subtask";
+    case modalType.EDIT_SUBTASK:
+      return "Fill this form to edit your subtask";
     default:
       return "No operation found.";
   }
@@ -55,6 +57,7 @@ const closeModal = () => {
               modalType.ADD_TASK,
               modalType.EDIT_TASK,
               modalType.ADD_SUBTASK,
+              modalType.EDIT_SUBTASK,
             ].includes(props.modalName)
           "
         />

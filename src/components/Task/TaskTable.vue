@@ -231,7 +231,10 @@ const expanded = ref({});
     class="flex-1"
   >
     <template #expanded="{ row }">
-      {{ row }}
+      <SubTaskList
+        :subtasks="row.original.subtasks"
+        :parent-task-id="row.original.id"
+      />
     </template>
   </UTable>
 </template>
