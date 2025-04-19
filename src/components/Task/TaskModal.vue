@@ -16,6 +16,8 @@ const headerText = computed(() => {
   switch (props.modalName) {
     case modalType.ADD_TASK:
       return "Fill this form to add your task";
+    case modalType.VIEW_TASK:
+      return "Task Details";
     default:
       return "";
   }
@@ -38,6 +40,10 @@ const closeModal = () => {
   >
     <template #body>
       <div>
+        <TaskView
+          v-if="props.modalName === modalType.VIEW_TASK"
+          :task-id="modalStore.getTaskId(props.modalName) || ''"
+        />
         <TaskForm v-if="[modalType.ADD_TASK].includes(props.modalName)" />
       </div>
     </template>
