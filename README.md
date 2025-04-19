@@ -17,21 +17,21 @@ This project is a starter template for building modern web applications using **
 ```mermaid
 flowchart TD
     A[User Opens App] --> B[App.vue]
-    B --> C[TaskTable.vue (Show Task List)]
-    B --> D[ThemeToggle.vue (Toggle Dark Mode)]
+    B --> C[TaskTable.vue - Show Task List]
+    B --> D[ThemeToggle.vue - Toggle Dark Mode]
     C --> E[Actions Dropdown]
-    E -->|View| F[TaskModal.vue (VIEW_TASK)]
-    E -->|Edit| G[TaskModal.vue (EDIT_TASK)]
-    E -->|Delete| H[TaskModal.vue (DELETE_TASK)]
-    E -->|Add Subtask| I[TaskModal.vue (ADD_SUBTASK)]
+    E -->|View| F[TaskModal.vue - VIEW_TASK]
+    E -->|Edit| G[TaskModal.vue - EDIT_TASK]
+    E -->|Delete| H[TaskModal.vue - DELETE_TASK]
+    E -->|Add Subtask| I[TaskModal.vue - ADD_SUBTASK]
     B --> J[Add Task Button]
-    J --> K[TaskModal.vue (ADD_TASK)]
+    J --> K[TaskModal.vue - ADD_TASK]
     F --> L[TaskDetail.vue]
     G --> M[TaskForm.vue]
     K --> M
     I --> M
     H --> N[TaskDelete.vue]
-    M --> O[taskStore.ts (Add/Edit/Delete Task/Subtask)]
+    M --> O[taskStore.ts - Add/Edit/Delete Task/Subtask]
     N --> O
     O --> C
     O --> P[LocalStorage]
